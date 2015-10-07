@@ -1,20 +1,56 @@
-import {Component, FORM_DIRECTIVES, View} from 'angular2/angular2';
+import {Component, View, FORM_DIRECTIVES, NgFor} from 'angular2/angular2';
 
 @Component({ selector: 'my-dashboard' })
 @View({
 	template: `
-		<h2>Books</h2>
-		<ul>
-			<li>Books will be here.</li>
+		<div class='row'>
+			<h2>Books</h2>
+		</div>
+		<div class='row'>
+			<p class='tagline'>Lookup your books by your Goodreads ID</p>
+			<label for='goodreads_id'>Goodreads ID</label>
+			<input [(ng-model)]="goodreads_id" id='goodreads_id' />
+			<button (click)="loadBooks()">Load Books</button>
+		</div>
+		<ul class='list-unstyled books'>
+			<li *ng-for="#review of books" class="row book rating-{{review.rating}}">
+			  <div class='col-md-3 book-image col-xs-3'>
+			    <a href='http://www.amazon.com/gp/product/{{review.book.isbn}}/adamfortuna-20' class='book-image' target='_blank'>
+			      <img src='{{review.book.image_url}}' />
+			      <img src='http://images.amazon.com/images/P/{{review.book.isbn}}.01.ZTZZZZZZ.jpg' />
+			    </a>
+			    <p class='rating' ng-if='review.rating > 0'><span class='rate'>{{review.rating}}</span> / <span class='rate-outof'>5</span></p>
+			  </div>
+				<div class='col-md-8 col-md-offset-1 col-lg-offset-0 col-lg-9 col-xs-7 col-xs-offset-1'>
+			    <h3>{{review.book.title}}</h3>
+			    <p class='review' ng-if='body != ""'>{{review.body}}</p>
+			    <p class='meta'>
+						<span>{{review.book.authors.author.name}}</span>
+			      <span class='date-read' ng-if='review.read_at || review.started_at'>
+		          <span ng-if='review.read_at && review.started_at'>
+		            Read from {{ review.started_at }} to {{review.read_at}}.
+		          </span>
+		          <span ng-if='review.started_at && !review.read_at'>
+		            Started on {{ review.started_at}}, reading now.
+		          </span>
+			      </span>
+			    </p>
+			  </div>
+			</li>
 		</ul>
 	`,
-	directives: [FORM_DIRECTIVES]
+	directives: [FORM_DIRECTIVES, NgFor]
 })
 export class DashboardComponent {
-	public name = 'john';
-	public message = '';
+	public goodreads_id = '2419634';
+	public books:Array<Object> = [];
 
-	sayHello() {
-		this.message = 'Hello ' + this.name + '!';
+	loadBooks() {
+		let url = `http://goodcache.herokuapp.com/users/${this.goodreads_id}/books`;
+		console.log("Loading books from dashboard");
+		$.get(url).then( response => {
+			console.log(response);
+			this.books = response;
+		});
 	}
 }
