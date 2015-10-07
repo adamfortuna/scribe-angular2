@@ -1,4 +1,5 @@
 import {Component, View, FORM_DIRECTIVES, NgFor} from 'angular2/angular2';
+import {ToDatePipe} from './todate.pipe'
 
 @Component({ selector: 'my-dashboard' })
 @View({
@@ -28,10 +29,10 @@ import {Component, View, FORM_DIRECTIVES, NgFor} from 'angular2/angular2';
 						<span>{{review.book.authors.author.name}}</span>
 			      <span class='date-read' ng-if='review.read_at || review.started_at'>
 		          <span ng-if='review.read_at && review.started_at'>
-		            Read from {{ review.started_at }} to {{review.read_at}}.
+		            Read from {{ review.started_at | toDate | date:'mediumDate'}} to {{review.read_at | toDate | date:'mediumDate'}}.
 		          </span>
 		          <span ng-if='review.started_at && !review.read_at'>
-		            Started on {{ review.started_at}}, reading now.
+		            Started on {{ review.started_at | toDate | date:'mediumDate'}}, reading now.
 		          </span>
 			      </span>
 			    </p>
@@ -39,7 +40,8 @@ import {Component, View, FORM_DIRECTIVES, NgFor} from 'angular2/angular2';
 			</li>
 		</ul>
 	`,
-	directives: [FORM_DIRECTIVES, NgFor]
+	directives: [FORM_DIRECTIVES, NgFor],
+	pipes: [ToDatePipe]
 })
 export class DashboardComponent {
 	public goodreads_id = '2419634';
