@@ -1,19 +1,17 @@
 import {View, Component} from 'angular2/angular2';
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
-import {CharactersComponent} from './characters.component';
+import {LookupComponent} from './lookup.component';
 import {DashboardComponent} from './dashboard.component';
 
-@Component({ selector: 'my-app' })
+@Component({ selector: 'scribe' })
 @View({
   template: `
-    <a [router-link]="['./Dashboard']">Dashboard</a>
-    <a [router-link]="['./Characters']">Characters</a>
+    <book-lookup></book-lookup>
     <router-outlet></router-outlet>
     `,
-  directives: [ROUTER_DIRECTIVES]
+  directives: [ROUTER_DIRECTIVES, LookupComponent]
 })
 @RouteConfig([
-  { path: '/', as: 'Dashboard', component: DashboardComponent },
-  { path: '/characters', as: 'Characters', component: CharactersComponent }
+  { path: '/', as: 'Dashboard', component: DashboardComponent }
 ])
 export class AppComponent { }

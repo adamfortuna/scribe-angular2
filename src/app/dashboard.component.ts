@@ -3,11 +3,10 @@ import {Component, FORM_DIRECTIVES, View} from 'angular2/angular2';
 @Component({ selector: 'my-dashboard' })
 @View({
 	template: `
-		<h2>Dashboard</h2>
-		<div>Hello {{name}}</div>
-		<input [(ng-model)]="name" />
-		<button (click)="sayHello()">Say Hello</button>
-		<p>{{message}}</p>
+		<h2>Books</h2>
+		<ul>
+			<li>Books will be here.</li>
+		</ul>
 	`,
 	directives: [FORM_DIRECTIVES]
 })
