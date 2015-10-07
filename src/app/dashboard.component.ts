@@ -1,4 +1,4 @@
-import {Component, View, FORM_DIRECTIVES, NgFor} from 'angular2/angular2';
+import {Component, View, FORM_DIRECTIVES, NgFor, NgIf} from 'angular2/angular2';
 import {ToDatePipe} from './todate.pipe'
 
 @Component({ selector: 'my-dashboard' })
@@ -20,18 +20,18 @@ import {ToDatePipe} from './todate.pipe'
 			      <img src='{{review.book.image_url}}' />
 			      <img src='http://images.amazon.com/images/P/{{review.book.isbn}}.01.ZTZZZZZZ.jpg' />
 			    </a>
-			    <p class='rating' ng-if='review.rating > 0'><span class='rate'>{{review.rating}}</span> / <span class='rate-outof'>5</span></p>
+			    <p class='rating' *ng-if='review.rating > 0'><span class='rate'>{{review.rating}}</span> / <span class='rate-outof'>5</span></p>
 			  </div>
 				<div class='col-md-8 col-md-offset-1 col-lg-offset-0 col-lg-9 col-xs-7 col-xs-offset-1'>
 			    <h3>{{review.book.title}}</h3>
-			    <p class='review' ng-if='body != ""'>{{review.body}}</p>
+			    <p class='review' *ng-if='body != ""'>{{review.body}}</p>
 			    <p class='meta'>
 						<span>{{review.book.authors.author.name}}</span>
-			      <span class='date-read' ng-if='review.read_at || review.started_at'>
-		          <span ng-if='review.read_at && review.started_at'>
+			      <span class='date-read' *ng-if='review.read_at || review.started_at'>
+		          <span *ng-if='review.read_at && review.started_at'>
 		            Read from {{ review.started_at | toDate | date:'mediumDate'}} to {{review.read_at | toDate | date:'mediumDate'}}.
 		          </span>
-		          <span ng-if='review.started_at && !review.read_at'>
+		          <span *ng-if='review.started_at && !review.read_at'>
 		            Started on {{ review.started_at | toDate | date:'mediumDate'}}, reading now.
 		          </span>
 			      </span>
@@ -40,7 +40,7 @@ import {ToDatePipe} from './todate.pipe'
 			</li>
 		</ul>
 	`,
-	directives: [FORM_DIRECTIVES, NgFor],
+	directives: [FORM_DIRECTIVES, NgFor, NgIf],
 	pipes: [ToDatePipe]
 })
 export class DashboardComponent {
